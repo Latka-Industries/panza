@@ -1,0 +1,29 @@
+[package]
+name = "panza"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.95"
+authors = ["AHurowitz <latkaindustries@gmail.com>"]
+description = "The squire for your CLI — clap serve, bind, health, static; you bring the quest."
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/Latka-Industries/panza"
+documentation = "https://docs.rs/panza"
+readme = "README.md"
+keywords = ["cli", "clap", "http", "axum", "serve"]
+categories = ["command-line-interface", "web-programming::http-server"]
+
+[dependencies]
+anyhow = "1"
+axum = "0.8"
+clap = { version = "4", features = ["derive"] }
+log = "0.4"
+mime_guess = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "signal", "net"] }
+tower-http = { version = "0.6", features = ["fs"] }
+
+[dev-dependencies]
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+tempfile = "3"
+tokio = { version = "1", features = ["macros", "rt-multi-thread", "signal", "net"] }
