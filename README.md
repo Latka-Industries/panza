@@ -19,6 +19,7 @@ _[All this time Sancho remained upon the hill, beholding, with amazement, the ma
 | `ServeMeta` | `service` + `version` for health JSON |
 | `run` | tokio + axum: bind, Ctrl-C shutdown, log listen URL |
 | `GET /health` | `{ "ok", "service", "version", "uptime_secs" }` |
+| Access log | `info`: `METHOD path[?query] -> status` on the full router |
 | `StaticMount` | `None` / `Dir` / `Embedded` with SPA `index.html` fallback |
 | Router merge | host supplies an `axum::Router`; panza merges it |
 
