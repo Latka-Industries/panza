@@ -1,6 +1,7 @@
 //! Bind, clap args, and the main `run` entrypoint.
 
 use std::net::{IpAddr, SocketAddr};
+use std::time::Instant;
 
 use axum::Router;
 use axum::routing::get;
@@ -42,9 +43,14 @@ impl ServeArgs {
 }
 
 /// Build the merged router: kit `/health`, then host `api`, then optional static fallback.
+///
+/// `/health` reports [`HealthBody::uptime_secs`] relative to when this function is called.
 pub fn serve_router(meta: ServeMeta, api: Router, static_mount: StaticMount) -> Router {
-    let health = HealthBody::from_meta(meta);
-    let kit = Router::new().route("/health", get(move || async move { axum::Json(health) }));
+    let started = Instant::now();
+    let kit = Router::new().route(
+        "/health",
+        get(move || async move { axum::Json(HealthBody::from_meta(meta, started)) }),
+    );
     static_mount.apply(kit.merge(api))
 }
 

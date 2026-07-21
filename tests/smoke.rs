@@ -40,6 +40,34 @@ async fn health_returns_meta() {
     assert_eq!(body["ok"], true);
     assert_eq!(body["service"], "panza-test");
     assert_eq!(body["version"], "0.0.0-test");
+    assert!(body["uptime_secs"].as_u64().is_some());
+}
+
+#[tokio::test]
+async fn health_uptime_increases() {
+    let app = serve_router(
+        ServeMeta {
+            service: "panza-test",
+            version: "0.0.0-test",
+        },
+        Router::new(),
+        StaticMount::None,
+    );
+    let addr = spawn_app(app).await;
+    let first: serde_json::Value = reqwest::get(format!("http://{addr}/health"))
+        .await
+        .expect("get")
+        .json()
+        .await
+        .expect("json");
+    tokio::time::sleep(Duration::from_secs(1)).await;
+    let second: serde_json::Value = reqwest::get(format!("http://{addr}/health"))
+        .await
+        .expect("get")
+        .json()
+        .await
+        .expect("json");
+    assert!(second["uptime_secs"].as_u64().unwrap() > first["uptime_secs"].as_u64().unwrap());
 }
 
 #[tokio::test]

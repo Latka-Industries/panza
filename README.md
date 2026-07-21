@@ -18,7 +18,7 @@ _[All this time Sancho remained upon the hill, beholding, with amazement, the ma
 | `ServeArgs` | clap: `--host` (default `127.0.0.1`), `--port` / `-p` (default `8787`), `--open` |
 | `ServeMeta` | `service` + `version` for health JSON |
 | `run` | tokio + axum: bind, Ctrl-C shutdown, log listen URL |
-| `GET /health` | `{ "ok", "service", "version" }` |
+| `GET /health` | `{ "ok", "service", "version", "uptime_secs" }` |
 | `StaticMount` | `None` / `Dir` / `Embedded` with SPA `index.html` fallback |
 | Router merge | host supplies an `axum::Router`; panza merges it |
 
