@@ -7,7 +7,7 @@
 
 _[All this time Sancho remained upon the hill, beholding, with amazement, the madness of his master, tearing his beard, and cursing the hour and minute on which it was his fate to know him.][quixote]_
 
-**The squire for your CLI** — clap `serve`, bind, health, static; you bring the quest.
+**The squire for your CLI** — clap `serve`, bind, health, static.
 
 **In active development — expect breaking changes.**
 
