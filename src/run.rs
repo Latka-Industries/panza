@@ -7,6 +7,9 @@ use std::net::{IpAddr, SocketAddr};
 use std::time::Instant;
 
 use axum::Router;
+use axum::extract::Request;
+use axum::middleware::{Next, from_fn};
+use axum::response::Response;
 use axum::routing::get;
 use clap::Parser;
 use log::{info, warn};
@@ -63,6 +66,7 @@ impl ServeArgs {
 /// 1. Panza registers `GET /health` (see [`HealthBody`]).
 /// 2. `api` is [`Router::merge`]d in — host domain routes.
 /// 3. [`StaticMount`] may attach a fallback for SPA / asset serving.
+/// 4. A request logger wraps the full stack (`METHOD path[?query] -> status` at `info`).
 ///
 /// [`HealthBody::uptime_secs`] is relative to **this call** (`Instant::now()` here), not to
 /// process start or first request. Call once per server instance.
@@ -88,7 +92,22 @@ pub fn serve_router(meta: ServeMeta, api: Router, static_mount: StaticMount) -> 
         "/health",
         get(move || async move { axum::Json(HealthBody::from_meta(meta, started)) }),
     );
-    static_mount.apply(kit.merge(api))
+    static_mount
+        .apply(kit.merge(api))
+        .layer(from_fn(log_http_request))
+}
+
+async fn log_http_request(req: Request, next: Next) -> Response {
+    let method = req.method().clone();
+    let path = req.uri().path().to_owned();
+    let query = req
+        .uri()
+        .query()
+        .map(|q| format!("?{q}"))
+        .unwrap_or_default();
+    let response = next.run(req).await;
+    info!("{method} {path}{query} -> {}", response.status());
+    response
 }
 
 /// Bind [`ServeArgs`], serve until Ctrl-C, then shut down gracefully.
