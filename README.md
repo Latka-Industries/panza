@@ -5,9 +5,9 @@
 ![Build](https://github.com/Latka-Industries/panza/workflows/Build/badge.svg)
 ![Rust](https://img.shields.io/badge/rust-1.95-orange.svg)
 
-*The squire for your CLI — clap `serve`, bind, health, static; you bring the quest.*
+_[All this time Sancho remained upon the hill, beholding, with amazement, the madness of his master, tearing his beard, and cursing the hour and minute on which it was his fate to know him.][quixote]_
 
-Named for **Sancho Panza**: each Latka (or other) CLI is the knight — domain API + frontend — and panza handles the practical serving.
+**The squire for your CLI** — clap `serve`, bind, health, static; you bring the quest.
 
 **In active development — expect breaking changes.**
 
@@ -62,3 +62,5 @@ For tests or custom bind loops, use [`serve_router`](https://docs.rs/panza/lates
 ## License
 
 MIT OR Apache-2.0
+
+[quixote]: https://bookshop.org/p/books/don-quixote-edith-grossman/df415e429dbed7f6?ean=9780060934347&bkshp-astro=t
